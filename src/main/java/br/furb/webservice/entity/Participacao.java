@@ -1,6 +1,9 @@
 package br.furb.webservice.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 
 @Entity
 @Table(name = "participacoes")
@@ -9,19 +12,23 @@ public class Participacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // relação com usuário
+    @NotNull(message = "Usuário é obrigatório")
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    // relação com partida
+    @NotNull(message = "Partida é obrigatória")
     @ManyToOne
     @JoinColumn(name = "partida_id")
     private Partida partida;
 
-    private Boolean confirmado = false;
+    @Pattern(
+            regexp = "A|B",
+            message = "Time deve ser A ou B"
+    )
+    private String time;
 
-    private String time; // A ou B
+    private Boolean confirmado = false;
 
     private Boolean pagou = false;
 

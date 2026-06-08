@@ -6,6 +6,7 @@ import br.furb.webservice.service.ParticipacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -27,14 +28,18 @@ public class ParticipacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<Participacao> salvar(@RequestBody Participacao p) {
+    public ResponseEntity<Participacao> salvar(
+            @Valid @RequestBody Participacao p) {
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(service.salvar(p));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Participacao> atualizar(@PathVariable Long id,
-                                                  @RequestBody Participacao p) {
+    public ResponseEntity<Participacao> atualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody Participacao p) {
+
         return ResponseEntity.ok(service.atualizar(id, p));
     }
 

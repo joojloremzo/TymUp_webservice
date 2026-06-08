@@ -2,6 +2,7 @@ package br.furb.webservice.controller;
 
 import br.furb.webservice.entity.Partida;
 import br.furb.webservice.service.PartidaService;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -27,14 +28,18 @@ public class PartidaController {
     }
 
     @PostMapping
-    public ResponseEntity<Partida> salvar(@RequestBody Partida partida) {
+    public ResponseEntity<Partida> salvar(
+            @Valid @RequestBody Partida partida) {
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(service.salvar(partida));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Partida> atualizar(@PathVariable Long id,
-                                             @RequestBody Partida partida) {
+    public ResponseEntity<Partida> atualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody Partida partida) {
+
         return ResponseEntity.ok(service.atualizar(id, partida));
     }
 

@@ -1,6 +1,9 @@
 package br.furb.webservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "usuarios")
@@ -10,10 +13,15 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
+    @NotBlank(message = "Email é obrigatório")
+    @Email(message = "Email inválido")
     private String email;
 
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotBlank(message = "Senha é obrigatória")
     private String senha;
 
     private String posicaoPreferida;

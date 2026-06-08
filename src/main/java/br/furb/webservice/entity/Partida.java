@@ -3,6 +3,8 @@ package br.furb.webservice.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name = "partidas")
@@ -15,9 +17,9 @@ public class Partida {
 
     private LocalTime hora;
 
+    @PositiveOrZero(message = "Valor deve ser maior ou igual a zero")
     private Double valor;
 
-    // Organizador da partida
     @ManyToOne
     @JoinColumn(name = "organizador_id")
     private Usuario organizador;
