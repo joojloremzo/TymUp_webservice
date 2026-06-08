@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.util.List;
 
 @Service
@@ -15,6 +17,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository repository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<Usuario> listar() {
         return repository.findAll();
@@ -26,25 +31,41 @@ public class UsuarioService {
     }
 
     public Usuario salvar(Usuario usuario) {
+
         if (usuario.getNome() == null || usuario.getEmail() == null) {
             throw new BancoDeDadosException("Nome e email são obrigatórios");
         }
+
+        usuario.setSenha(
+                passwordEncoder.encode(usuario.getSenha())
+        );
 
         return repository.save(usuario);
     }
 
     public Usuario atualizar(Long id, Usuario usuario) {
+
         Usuario existente = buscarPorId(id);
 
-        existente.setNome(usuario.getNome());
-        existente.setEmail(usuario.getEmail());
-        existente.setSenha(usuario.getSenha());
-        existente.setPosicaoPreferida(usuario.getPosicaoPreferida());
+        if (usuario.getNome() != null)
+            existente.setNome(usuario.getNome());
+
+        if (usuario.getEmail() != null)
+            existente.setEmail(usuario.getEmail());
+
+        if (usuario.getSenha() != null)
+            existente.setSenha(
+                    passwordEncoder.encode(usuario.getSenha())
+            );
+
+        if (usuario.getPosicaoPreferida() != null)
+            existente.setPosicaoPreferida(usuario.getPosicaoPreferida());
 
         return repository.save(existente);
     }
 
     public void deletar(Long id) {
+
         buscarPorId(id);
 
         try {

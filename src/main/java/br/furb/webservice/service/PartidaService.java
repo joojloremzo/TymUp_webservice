@@ -35,14 +35,6 @@ public class PartidaService {
 
     public Partida salvar(Partida partida) {
 
-        if (partida.getData() == null || partida.getHora() == null) {
-            throw new BancoDeDadosException("Data e hora são obrigatórias");
-        }
-
-        if (partida.getOrganizador() == null || partida.getOrganizador().getId() == null) {
-            throw new BancoDeDadosException("Organizador é obrigatório");
-        }
-
         // validar se o usuário existe
         Usuario organizador = usuarioRepository.findById(partida.getOrganizador().getId())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Organizador não encontrado"));
